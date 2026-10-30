@@ -16,14 +16,14 @@ su nota del proyecto es 0.0.
 
 | Nombre completo | Código | Correo institucional | Usuario de GitHub |
 |---|---|---|---|
-|  |  |  |  |
-|  |  |  |  |
-|  |  |  |  |
+| Mateo Rivera Prados  | 9033302 | mateorivera@javerianacali.edu.co | mateorivera2410 |
+| Diego Alejandro Calvo | 9038021 | diego4645@javerianacali.edu.co | calvo8665 |
+| Jan Pieter Lelie | 9035703 | pieterlelie21@javerianacali.edu.co | janpieterlelie207 |
 
-**Escenario escogido:** (A inventario / B frecuencias / C turnos / D índice)
+**Escenario escogido:**    D - Turnos de una Clínica
 
-- Estructura escrita desde cero:
-- Estructura de la biblioteca contra la que se compara:
+- Estructura escrita desde cero: cola circular sobre arreglo (avance) y montículo binario sobre arreglo (final)
+- Estructura de la biblioteca contra la que se compara: priority_queue
 
 ## Lo primero
 
