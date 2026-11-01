@@ -1,5 +1,16 @@
 # Bitácora
 
+## 2026-11-01
+
+- Quiénes: Diego Alejandro Calvo
+- Qué hicimos:
+  - Se clonó el repositorio y se revisó lo que ya estaba de la cola circular.
+  - Se escribió `principal.cpp`: lee cuántas órdenes vienen, crea la cola con esa capacidad y lee las órdenes con un `while` hasta completarlas.
+  - `LLEGA` guarda al paciente con el número de la orden en que llegó, para poder calcular después cuánto esperó.
+  - `ATIENDE` saca al primero de la cola y escribe su nombre, o `nadie espera` si la cola está vacía.
+  - Se arregló el `Makefile` para que compile también `cola.cpp`. Se probó con el ejemplo del enunciado y compila sin advertencias.
+- Qué quedó pendiente: `ESPERAN` y `PROMEDIO` (los hace Jan Pieter), subir los casos de prueba a `datos/` y escribir el informe de avance.
+
 ## 2026-10-30
 
 - Quiénes: Mateo Rivera Prados
