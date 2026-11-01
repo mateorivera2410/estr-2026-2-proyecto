@@ -2,6 +2,15 @@
 
 ## 2026-11-01
 
+- Quiénes: Jan Pieter Lelie
+- Qué hicimos:
+- Se clonó el repositorio y se reviso la implementación previa de la cola circular y el archivo 'principal.cpp'.
+- Se completo 'principal.cpp' implementando las ordenes 'ESPERAN' (consulta cuantos pacientes hay en sala.) y 'PROMEDIO'(calcula el tiempo promedio de espera de los atendidos con decimales).
+- Se crearon y subieron los 5 casos de prueba a la carpeta 'datos/' (3 funcionales y 2 limite: sala vacía y un solo paciente), validando que todos pasen correctamente con `make pruebas`.
+- Qué quedó pendiente: Llenar la tabla de casos de prueba en el informe de avance (`docs/informe-avance.md`).
+
+## 2026-11-01
+
 - Quiénes: Diego Alejandro Calvo
 - Qué hicimos:
   - Se clonó el repositorio y se revisó lo que ya estaba de la cola circular.
