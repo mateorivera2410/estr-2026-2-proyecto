@@ -1,12 +1,12 @@
 # Compilación del proyecto. Ajuste FUENTES con los archivos que escriba.
 CC      = g++
 CFLAGS  = -Wall -Wextra -O2
-FUENTES = principal.cpp
+FUENTES = principal.cpp cola.cpp
 PROGRAMA = proyecto
 
 all: $(PROGRAMA)
 
-$(PROGRAMA): $(FUENTES)
+$(PROGRAMA): $(FUENTES) cola.h
 	$(CC) $(CFLAGS) $(FUENTES) -o $(PROGRAMA)
 
 # Corre cada entrada de ../datos/ y compara con su salida esperada
