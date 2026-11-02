@@ -32,9 +32,36 @@ En el avance la clínica atiende por orden de llegada, sin mirar la urgencia. Po
 
 ## 2. Qué guarda la estructura y qué operaciones necesita
 
+La estructura es una cola circular sobre un arreglo. Guarda a los pacientes que están en la sala, en el orden en que llegaron. Cada paciente es un `struct Paciente` con:
+
+- `nombre`: hasta 50 letras, más el `'\0'` del final.
+- `urgencia`: de 1 a 5. En el avance la cola no la usa, pero la guardamos porque el montículo de la entrega final la necesita, y así las dos estructuras reciben el mismo paciente.
+- `llegada`: el número de la orden en que llegó, para calcular cuánto esperó.
+
+La cola (`struct Cola`) tiene:
+
+- `datos`: el arreglo de pacientes, reservado con un solo `malloc` al crear la cola. Los pacientes se copian dentro del arreglo, así que no hace falta un `malloc` por cada uno.
+- `capacidad`: cuántos pacientes caben. Usamos $N$, el número de órdenes de la primera línea, porque como mucho puede haber $N$ órdenes `LLEGA`.
+- `frente`: la casilla del próximo paciente que se va a atender.
+- `cantidad`: cuántos pacientes están esperando.
+
+Las operaciones que necesita el programa, y la orden que usa cada una:
+
 | Operación | Qué hace | Precondición |
 |---|---|---|
-|  |  |  |
+| `crearCola(capacidad)` | Reserva la cola y su arreglo y la deja vacía, con $\text{frente} = 0$ y $\text{cantidad} = 0$. Si `malloc` falla devuelve `NULL` y el programa no sigue. | Ninguna. Si la capacidad es menor que 1, se usa 1. |
+| `registrar(c, p)`, orden `LLEGA` | Pone al paciente al final de la cola. Devuelve 1 si entró y 0 si no cabía. | Que quepa alguien: $\text{cantidad} \lt \text{capacidad}$. Si la cola está llena, el paciente no entra (decisión del grupo). |
+| `atender(c, &p)`, orden `ATIENDE` | Saca al paciente del frente y lo deja en `p`. Devuelve 1 si había alguien y 0 si no. | Que haya alguien: $\text{cantidad} \gt 0$. Si no hay nadie, el programa escribe `nadie espera`. |
+| `cantidad(c)`, orden `ESPERAN` | Devuelve cuántos pacientes están esperando. | Que la cola exista. |
+| `estaVacia(c)` | Devuelve 1 si no hay nadie esperando. La usa `atender`. | Que la cola exista. |
+| `estaLlena(c)` | Devuelve 1 si ya no cabe nadie. La usa `registrar`. | Que la cola exista. |
+| `destruirCola(c)` | Libera el arreglo y después la cola. | Que la cola no se vuelva a usar. Si `c` es `NULL`, no hace nada. |
+
+`PROMEDIO` no es una operación de la cola. Los pacientes atendidos ya salieron de ella, así que la cola no podría calcularlo. Lo hace el `main` con dos contadores, `pacientesAtendidos` y `sumaEsperas`: cada vez que `ATIENDE` saca a alguien, suma lo que esperó y cuenta uno más. Así `PROMEDIO` solo hace una división, sin recorrer la sala:
+
+$$\text{promedio} = \frac{\text{sumaEsperas}}{\text{pacientesAtendidos}}$$
+
+Si todavía no se ha atendido a nadie, escribe `0.0` (decisión del grupo), para no dividir entre cero.
 
 ## 3. La estructura escogida y por qué
 
