@@ -143,3 +143,9 @@ Para los casos límite escogimos **la estructura vacía** y **con un solo elemen
 Elegimos principalmente la **estructura vacía** porque es fundamental garantizar que el programa no falle ni arroje errores de memoria al intentar sacar datos de una cola que no tiene pacientes. Esto valida que las órdenes `ATIENDE` y `PROMEDIO` manejen bien la cola vacía, escribiendo `nadie espera` o `0.0` sin colapsar el programa. Adicionalmente, el caso de un solo elemento nos asegura que los índices de la cola funcionen bien: con un solo paciente, `frente` queda en su casilla y `cantidad` es 1; al atenderlo, `cantidad` vuelve a 0, y un segundo `ATIENDE` responde `nadie espera`.
 
 No escogimos la **cola llena** porque en este programa no puede pasar: la cola se crea con capacidad $N$, el número de órdenes, y como mucho hay $N$ órdenes `LLEGA`. Tampoco aplica la **clave repetida**, porque la cola no busca pacientes por nombre: si llegan dos pacientes con el mismo nombre, simplemente se atienden en el orden en que llegaron.
+
+## Referencias
+
+- R. Thareja. *Data Structures Using C*. 2.ª ed. Oxford University Press, 2014. Capítulo 8 (colas), sección 8.4.1 (colas circulares).
+- C. Delgado. Notas del curso Estructuras de Datos 2026-2, Clase 11: TAD Lista, Pila y Cola. Pontificia Universidad Javeriana Cali.
+- Claude (Anthropic). Asistente de IA, usado como apoyo con explicaciones y revisión de posibles errores en el código, y en la escritura y organización de los textos del informe.
