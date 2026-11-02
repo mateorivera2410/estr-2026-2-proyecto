@@ -1,11 +1,34 @@
 # Informe del avance
 
-*(Borren los comentarios entre paréntesis al escribir.)*
-
 ## 1. El escenario
 
-(Descríbanlo en sus propias palabras: qué guarda el programa, quién lo
-usa y para qué. No copien el enunciado.)
+El programa simula la sala de espera de una clínica. Los pacientes van llegando y cada uno trae un nivel de urgencia entre 1 y 5, donde 5 es lo más grave. Mientras esperan quedan en la sala, y cuando hay un médico libre se llama al siguiente.
+
+Lo usaría, por ejemplo, la recepción de la clínica: para registrar a cada paciente que llega, saber a quién le toca pasar, cuántas personas siguen esperando y cuánto se han demorado en promedio los que ya fueron atendidos.
+
+De cada paciente se guarda su nombre, su urgencia y el número de la orden en que llegó. No usamos un reloj de verdad: cada orden que se lee cuenta como una unidad de tiempo. Así, lo que esperó un paciente es
+
+$$\text{espera} = \text{orden en que lo atienden} - \text{orden en que llegó}$$
+
+La primera línea de la entrada dice cuántas órdenes vienen, y después llegan las órdenes, una por línea:
+
+- `LLEGA nombre urgencia`: registra a un paciente. No escribe nada.
+- `ATIENDE`: llama al siguiente y escribe su nombre, o `nadie espera` si la sala está vacía.
+- `ESPERAN`: escribe cuántos pacientes hay en la sala.
+- `PROMEDIO`: escribe con un decimal cuánto esperaron en promedio los que ya fueron atendidos.
+
+Un ejemplo con dos pacientes y seis órdenes:
+
+| Orden | Qué pasa | Lo que escribe |
+|---|---|---|
+| 1. `LLEGA camila 1` | Llega camila, con urgencia 1 | — |
+| 2. `LLEGA andres 4` | Llega andres, con urgencia 4 | — |
+| 3. `ATIENDE` | Pasa camila, que esperó $3 - 1 = 2$ | `camila` |
+| 4. `ESPERAN` | Solo queda andres en la sala | `1` |
+| 5. `ATIENDE` | Pasa andres, que esperó $5 - 2 = 3$ | `andres` |
+| 6. `PROMEDIO` | $(2 + 3) / 2 = 2.5$ | `2.5` |
+
+En el avance la clínica atiende por orden de llegada, sin mirar la urgencia. Por eso en el ejemplo andres, que estaba más grave, esperó más que camila solo porque llegó después. En la entrega final eso cambia: con el montículo se atenderá primero al más urgente, y vamos a comparar cuánto esperan los urgentes en cada caso.
 
 ## 2. Qué guarda la estructura y qué operaciones necesita
 
