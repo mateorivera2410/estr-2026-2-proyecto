@@ -2,12 +2,22 @@
 
 ## 2026-11-01
 
+- Quiénes: Mateo Rivera Prados
+- Qué hicimos:
+  - Revisamos lo que subieron Diego y Jan Pieter: compila sin advertencias con `-Wall -Wextra` y `make pruebas` da OK en los 5 casos. También revisamos a mano que las salidas esperadas estuvieran bien calculadas.
+  - Corregimos el formato de la entrada de Jan Pieter en la bitácora.
+  - Escribimos la sección 3 del informe del avance: por qué escogimos la cola circular frente a la pila, el arreglo normal y la lista enlazada, el costo de cada operación con su razón, el invariante y un diagrama en Mermaid de la cola dando la vuelta. La cita es a Thareja, capítulo 8, sección 8.4.1.
+  - Escribimos la sección 4 del informe: qué vamos a medir en la entrega final, con qué tamaños de entrada y qué esperamos ver.
+- Qué quedó pendiente: Revisar las secciones 1 y 2 (Diego) y 5 (Jan Pieter) del informe cuando las suban.
+
+## 2026-11-01
+
 - Quiénes: Jan Pieter Lelie
 - Qué hicimos:
-- Se clonó el repositorio y se reviso la implementación previa de la cola circular y el archivo 'principal.cpp'.
-- Se completo 'principal.cpp' implementando las ordenes 'ESPERAN' (consulta cuantos pacientes hay en sala.) y 'PROMEDIO'(calcula el tiempo promedio de espera de los atendidos con decimales).
-- Se crearon y subieron los 5 casos de prueba a la carpeta 'datos/' (3 funcionales y 2 limite: sala vacía y un solo paciente), validando que todos pasen correctamente con `make pruebas`.
-- Qué quedó pendiente: Llenar la tabla de casos de prueba en el informe de avance (`docs/informe-avance.md`).
+  - Se clonó el repositorio y se revisó la implementación de la cola circular y el `principal.cpp`.
+  - Se completó `principal.cpp` con las órdenes `ESPERAN` (cuántos pacientes hay en la sala) y `PROMEDIO` (el promedio de espera de los atendidos, con un decimal).
+  - Se crearon los 5 casos de prueba en `datos/`: 3 funcionales y 2 límite (sala vacía y un solo paciente). Todos pasan con `make pruebas`.
+- Qué quedó pendiente: Escribir el informe de avance (`docs/informe-avance.md`).
 
 ## 2026-11-01
 
