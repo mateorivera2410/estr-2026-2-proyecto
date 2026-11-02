@@ -1,5 +1,13 @@
 # Bitácora
 
+## 2026-11-02
+
+- Quiénes: Diego Alejandro Calvo
+- Qué hicimos:
+  - Escribimos la sección 1 del informe del avance: el escenario con un ejemplo propio de dos pacientes y cómo se mide la espera.
+  - Escribimos la sección 2: qué guardan `Paciente` y `Cola`, la tabla de operaciones con su precondición, y por qué `PROMEDIO` lo calcula el `main` y no la cola.
+- Qué quedó pendiente: La sección 5 del informe (Jan Pieter) y la revisión final antes del cierre.
+
 ## 2026-11-01
 
 - Quiénes: Mateo Rivera Prados
