@@ -138,6 +138,7 @@ Las salidas obtenidas son las que escribe el programa al correr `make pruebas` e
     OK   caso5-limite-un-solo-paciente.in
 
 **Justificación de los casos límite:**
+
 Para los casos límite escogimos **la estructura vacía** y **con un solo elemento**.
 
 Elegimos principalmente la **estructura vacía** porque es fundamental garantizar que el programa no falle ni arroje errores de memoria al intentar sacar datos de una cola que no tiene pacientes. Esto valida que las órdenes `ATIENDE` y `PROMEDIO` manejen bien la cola vacía, escribiendo `nadie espera` o `0.0` sin colapsar el programa. Adicionalmente, el caso de un solo elemento nos asegura que los índices de la cola funcionen bien: con un solo paciente, `frente` queda en su casilla y `cantidad` es 1; al atenderlo, `cantidad` vuelve a 0, y un segundo `ATIENDE` responde `nadie espera`.
