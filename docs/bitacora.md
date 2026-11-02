@@ -1,19 +1,22 @@
 # Bitácora
 
+## 2026-11-02
+
+- Quiénes: Mateo Rivera Prados
+- Qué hicimos:
+  - Revisión final del avance con los criterios del profe: compila sin advertencias, `make pruebas` da OK en los 5 casos y el informe tiene las 5 secciones completas.
+  - Comparamos la tabla de casos de la sección 5 con los archivos `.in` y `.out` de `datos/`: coinciden.
+  - Unimos en una sola las dos entradas de Jan Pieter del 2 de noviembre, porque fueron la misma sesión, y aclaramos la entrada del 14 de octubre.
+  - Agregamos la sección de Referencias al informe del avance, con lo que consultamos.
+- Qué quedó pendiente: Empezar la entrega final: el montículo binario con las mismas funciones de la cola.
 
 ## 2026-11-02
 
 - Quiénes: Jan Pieter Lelie
 - Qué hicimos:
-  - Se corrigió la Sección 5 del informe de avance (`docs/informe-avance.md`), agregando la tabla detallada con las entradas y salidas de los casos de prueba y mejorando la justificación técnica de los casos límite (estructura vacía y un solo elemento).
-- Qué quedó pendiente: Revision final en grupo del trabajo antes del cierre.
-
-## 2026-11-02
-
-- Quiénes: Jan Pieter Lelie
-- Qué hicimos:
-  - Se completó la Sección 5 del informe de avance, documentando la tabla de validación con los 5 casos de prueba (3 funcionales y 2 límite) y redactando la justificación de los casos límite elegidos, estructura vacía y con un solo elemento.
-- Qué quedó pendiente: Revision final en grupo del trabajo antes del cierre.
+  - Se completó la sección 5 del informe de avance: la tabla con los 5 casos de prueba (3 funcionales y 2 límite), con su entrada, la salida esperada y la salida obtenida.
+  - Se corrigió la sección 5: se detallaron las entradas y salidas de cada caso y se mejoró la justificación de los casos límite (estructura vacía y un solo elemento).
+- Qué quedó pendiente: Revisión final en grupo del trabajo antes del cierre.
 
 ## 2026-11-02
 
@@ -71,5 +74,5 @@
 ## 2026-10-14
 
 - Quiénes: Mateo Rivera Prados
-- Qué hicimos: Fork del repositorio base del curso, clon local y se agregaron los colaboradores.
+- Qué hicimos: Fork del repositorio base del curso, clon local y se agregaron los colaboradores. El fork no genera un commit, por eso no aparece en la historia de este día.
 - Qué quedó pendiente: Llenar el README.
