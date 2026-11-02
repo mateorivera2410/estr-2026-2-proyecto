@@ -123,10 +123,12 @@ En resumen, esperamos que la cola sea más rápida, pero que el montículo atien
 
 | Caso | Entrada | Salida esperada | Salida obtenida |
 |---|---|---|---|
-| funcional 1 |  |  |  |
-| funcional 2 |  |  |  |
-| funcional 3 |  |  |  |
-| límite |  |  |  |
+| funcional 1 | `caso1-ejemplo-enunciado.in` | `caso1-ejemplo-enunciado.out` | Idéntica a la esperada (OK) |
+| funcional 2 | `caso2-orden-de-llegada.in` | `caso2-orden-de-llegada.out` | Idéntica a la esperada (OK) |
+| funcional 3 | `caso3-llegadas-y-atenciones-mezcladas.in` | `caso3-llegadas-y-atenciones-mezcladas.out` | Idéntica a la esperada (OK) |
+| límite 1 | `caso4-limite-sala-vacia.in` | `caso4-limite-sala-vacia.out` | Idéntica a la esperada (OK) |
+| límite 2 | `caso5-limite-un-solo-paciente.in` | `caso5-limite-un-solo-paciente.out` | Idéntica a la esperada (OK) |
 
-(El caso límite es la estructura vacía, con un solo elemento, llena, o
-con la clave repetida: digan cuál escogieron y por qué.)
+**Justificación de los casos límite:**
+Para los casos límite escogimos **la estructura vacía** y **con un solo elemento**. 
+Elegimos principalmente la **estructura vacía** porque es fundamental garantizar que el programa no falle ni arroje errores de memoria al intentar sacar datos de una cola circular que no tiene pacientes. Esto valida que las órdenes `ATIENDE` y `PROMEDIO` manejen correctamente las validaciones cuando la cola está vacía, imprimiendo "nadie espera" o "0.0" sin colapsar el sistema. Adicionalmente, el caso de un solo elemento nos asegura que los punteros de la cola circular funcionen bien cuando el frente y el final apuntan al mismo paciente.

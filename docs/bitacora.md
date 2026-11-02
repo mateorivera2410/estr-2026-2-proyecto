@@ -25,7 +25,7 @@
   - Se clonó el repositorio y se revisó la implementación de la cola circular y el `principal.cpp`.
   - Se completó `principal.cpp` con las órdenes `ESPERAN` (cuántos pacientes hay en la sala) y `PROMEDIO` (el promedio de espera de los atendidos, con un decimal).
   - Se crearon los 5 casos de prueba en `datos/`: 3 funcionales y 2 límite (sala vacía y un solo paciente). Todos pasan con `make pruebas`.
-- Qué quedó pendiente: Escribir el informe de avance (`docs/informe-avance.md`).
+- Qué quedó pendiente: Escribir el informe de avance seccion 5.
 
 ## 2026-11-01
 
