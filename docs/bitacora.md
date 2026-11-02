@@ -1,5 +1,13 @@
 # Bitácora
 
+
+## 2026-11-02
+
+- Quiénes: Jan Pieter Lelie
+- Qué hicimos:
+  - Se completó la Sección 5 del informe de avance, documentando la tabla de validación con los 5 casos de prueba (3 funcionales y 2 límite) y redactando la justificación de los casos límite elegidos, estructura vacía y con un solo elemento.
+
+
 ## 2026-11-02
 
 - Quiénes: Diego Alejandro Calvo
