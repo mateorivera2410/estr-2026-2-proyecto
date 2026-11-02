@@ -123,12 +123,23 @@ En resumen, esperamos que la cola sea más rápida, pero que el montículo atien
 
 | Caso | Entrada | Salida esperada | Salida obtenida |
 |---|---|---|---|
-| funcional 1 | `caso1-ejemplo-enunciado.in` | `caso1-ejemplo-enunciado.out` | Idéntica a la esperada (OK) |
-| funcional 2 | `caso2-orden-de-llegada.in` | `caso2-orden-de-llegada.out` | Idéntica a la esperada (OK) |
-| funcional 3 | `caso3-llegadas-y-atenciones-mezcladas.in` | `caso3-llegadas-y-atenciones-mezcladas.out` | Idéntica a la esperada (OK) |
-| límite 1 | `caso4-limite-sala-vacia.in` | `caso4-limite-sala-vacia.out` | Idéntica a la esperada (OK) |
-| límite 2 | `caso5-limite-un-solo-paciente.in` | `caso5-limite-un-solo-paciente.out` | Idéntica a la esperada (OK) |
+| funcional 1: el ejemplo del enunciado (`caso1-ejemplo-enunciado`) | `7`<br>`LLEGA ana 2`<br>`LLEGA beto 5`<br>`ESPERAN`<br>`ATIENDE`<br>`ATIENDE`<br>`ESPERAN`<br>`PROMEDIO` | `2`<br>`ana`<br>`beto`<br>`0`<br>`3.0` | `2`<br>`ana`<br>`beto`<br>`0`<br>`3.0` |
+| funcional 2: llega primero el menos urgente (carlos, urgencia 1) y aun así pasa primero (`caso2-orden-de-llegada`) | `9`<br>`LLEGA carlos 1`<br>`LLEGA diana 5`<br>`LLEGA elena 3`<br>`ATIENDE`<br>`LLEGA felipe 4`<br>`ESPERAN`<br>`ATIENDE`<br>`ATIENDE`<br>`PROMEDIO` | `carlos`<br>`3`<br>`diana`<br>`elena`<br>`4.3` | `carlos`<br>`3`<br>`diana`<br>`elena`<br>`4.3` |
+| funcional 3: llegadas y atenciones mezcladas (`caso3-llegadas-y-atenciones-mezcladas`) | `10`<br>`LLEGA ivan 2`<br>`ATIENDE`<br>`LLEGA julia 5`<br>`LLEGA karen 1`<br>`ESPERAN`<br>`ATIENDE`<br>`LLEGA luis 4`<br>`ATIENDE`<br>`ATIENDE`<br>`PROMEDIO` | `ivan`<br>`2`<br>`julia`<br>`karen`<br>`luis`<br>`2.5` | `ivan`<br>`2`<br>`julia`<br>`karen`<br>`luis`<br>`2.5` |
+| límite 1: sala vacía (`caso4-limite-sala-vacia`) | `5`<br>`ATIENDE`<br>`ESPERAN`<br>`PROMEDIO`<br>`LLEGA gabriel 2`<br>`ESPERAN` | `nadie espera`<br>`0`<br>`0.0`<br>`1` | `nadie espera`<br>`0`<br>`0.0`<br>`1` |
+| límite 2: un solo paciente (`caso5-limite-un-solo-paciente`) | `4`<br>`LLEGA hugo 3`<br>`ATIENDE`<br>`ATIENDE`<br>`PROMEDIO` | `hugo`<br>`nadie espera`<br>`1.0` | `hugo`<br>`nadie espera`<br>`1.0` |
+
+Las salidas obtenidas son las que escribe el programa al correr `make pruebas` en `codigo/`, que compara cada una con su `.out`:
+
+    OK   caso1-ejemplo-enunciado.in
+    OK   caso2-orden-de-llegada.in
+    OK   caso3-llegadas-y-atenciones-mezcladas.in
+    OK   caso4-limite-sala-vacia.in
+    OK   caso5-limite-un-solo-paciente.in
 
 **Justificación de los casos límite:**
-Para los casos límite escogimos **la estructura vacía** y **con un solo elemento**. 
-Elegimos principalmente la **estructura vacía** porque es fundamental garantizar que el programa no falle ni arroje errores de memoria al intentar sacar datos de una cola circular que no tiene pacientes. Esto valida que las órdenes `ATIENDE` y `PROMEDIO` manejen correctamente las validaciones cuando la cola está vacía, imprimiendo "nadie espera" o "0.0" sin colapsar el sistema. Adicionalmente, el caso de un solo elemento nos asegura que los punteros de la cola circular funcionen bien cuando el frente y el final apuntan al mismo paciente.
+Para los casos límite escogimos **la estructura vacía** y **con un solo elemento**.
+
+Elegimos principalmente la **estructura vacía** porque es fundamental garantizar que el programa no falle ni arroje errores de memoria al intentar sacar datos de una cola que no tiene pacientes. Esto valida que las órdenes `ATIENDE` y `PROMEDIO` manejen bien la cola vacía, escribiendo `nadie espera` o `0.0` sin colapsar el programa. Adicionalmente, el caso de un solo elemento nos asegura que los índices de la cola funcionen bien: con un solo paciente, `frente` queda en su casilla y `cantidad` es 1; al atenderlo, `cantidad` vuelve a 0, y un segundo `ATIENDE` responde `nadie espera`.
+
+No escogimos la **cola llena** porque en este programa no puede pasar: la cola se crea con capacidad $N$, el número de órdenes, y como mucho hay $N$ órdenes `LLEGA`. Tampoco aplica la **clave repetida**, porque la cola no busca pacientes por nombre: si llegan dos pacientes con el mismo nombre, simplemente se atienden en el orden en que llegaron.

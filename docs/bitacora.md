@@ -5,8 +5,15 @@
 
 - Quiénes: Jan Pieter Lelie
 - Qué hicimos:
-  - Se completó la Sección 5 del informe de avance, documentando la tabla de validación con los 5 casos de prueba (3 funcionales y 2 límite) y redactando la justificación de los casos límite elegidos, estructura vacía y con un solo elemento.
+  - Se corrigió la Sección 5 del informe de avance (`docs/informe-avance.md`), agregando la tabla detallada con las entradas y salidas de los casos de prueba y mejorando la justificación técnica de los casos límite (estructura vacía y un solo elemento).
+- Qué quedó pendiente: Revision final en grupo del trabajo antes del cierre.
 
+## 2026-11-02
+
+- Quiénes: Jan Pieter Lelie
+- Qué hicimos:
+  - Se completó la Sección 5 del informe de avance, documentando la tabla de validación con los 5 casos de prueba (3 funcionales y 2 límite) y redactando la justificación de los casos límite elegidos, estructura vacía y con un solo elemento.
+- Qué quedó pendiente: Revision final en grupo del trabajo antes del cierre.
 
 ## 2026-11-02
 
