@@ -5,3 +5,8 @@ a.out
 codigo/proyecto
 !datos/*.out
 .DS_Store
+codigo/proyecto_cola
+codigo/proyecto_monticulo
+codigo/medir_cola
+codigo/medir_monticulo
+!datos/monticulo/*.out

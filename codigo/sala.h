@@ -27,7 +27,7 @@ Sala * crearSala(int capacidad);
 
 // Libera el arreglo de pacientes y luego la sala
 void destruirSala(Sala *c);
-// Mete a p al final de la sala. Devuelve 1 si entro, 0 si estaba llena
+// Registra a p al final de la sala. Devuelve 1 si entro, 0 si estaba llena
 int registrar(Sala* c, Paciente p);
 // Saca al proximo paciente y lo copia en *p. Devuelve 1 si habia alguien, 0 si estaba vacia
 int atender(Sala* c, Paciente* p);
@@ -35,7 +35,7 @@ int atender(Sala* c, Paciente* p);
 int cantidad(const Sala* c);
 // Devuelve 1 si no hay nadie esperando, 0 si hay alguien
 int estaVacia(const Sala* c);
-// Devuelve 1 if the sala llego a su capacidad, 0 if todavia cabe alguien
+// Devuelve 1 si la sala llego a su capacidad, 0 si todavia cabe alguien
 int estaLlena(const Sala * c);
 
 
