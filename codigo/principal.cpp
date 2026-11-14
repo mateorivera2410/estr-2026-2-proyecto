@@ -3,7 +3,7 @@
 // Lee las ordenes de la entrada y atiende a los pacientes por orden de llegada (cola circular).
 #include <cstdio>
 #include <cstring>
-#include "cola.h"
+#include "sala.h"
 
 int main()
 {
@@ -11,14 +11,14 @@ int main()
     int reloj = 0;//numero de la orden que se esta leyendo, sube 1 con cada orden
     char orden[20];//la palabra de la orden: LLEGA, ATIENDE, ESPERAN o PROMEDIO
     Paciente paciente; //el paciente que llega o el que se atiende
-    Cola *salaEspera = NULL;
+    Sala *salaEspera = NULL;
     int pacientesAtendidos = 0; //cuantos pacientes ya se atendieron
     long long sumaEsperas = 0; //suma de lo que esperaron los atendidos (long long porque puede crecer mucho)
 
     if (scanf("%d", &totalOrdenes) == 1)
     {
         //a lo sumo llegan totalOrdenes pacientes, asi que con esa capacidad nunca se llena
-        salaEspera = crearCola(totalOrdenes);
+        salaEspera = crearSala(totalOrdenes);
         if (salaEspera != NULL)
         {
             //se lee hasta completar las ordenes o hasta que se acabe la entrada
@@ -66,8 +66,8 @@ int main()
                     printf("%.1f\n", promedioEspera);
                 }
             }
-            //se libera la memoria que reservo crearCola
-            destruirCola(salaEspera);
+            //se libera la memoria que reservo crearSala
+            destruirSala(salaEspera);
         }
     }
     return 0;

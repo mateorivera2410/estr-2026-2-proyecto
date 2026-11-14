@@ -6,7 +6,7 @@ PROGRAMA = proyecto
 
 all: $(PROGRAMA)
 
-$(PROGRAMA): $(FUENTES) cola.h
+$(PROGRAMA): $(FUENTES) sala.h
 	$(CC) $(CFLAGS) $(FUENTES) -o $(PROGRAMA)
 
 # Corre cada entrada de ../datos/ y compara con su salida esperada
