@@ -2,6 +2,15 @@
 
 ## 2026-11-14
 
+- Quiénes: Jan Pieter Lelie
+- Qué hicimos:
+  - Escribimos `codigo/monticulo.cpp`: el montículo binario de máximos en arreglo con las 7 funciones de `sala.h` (`subir` al registrar, `bajar` al atender), con desempate por menor `llegada`. Compila sin advertencias y da el resultado del enunciado.
+  - Creamos `datos/monticulo/` con los 5 casos de la cola y el `caso6-empate-de-urgencias`, con las salidas calculadas a mano. `make pruebas` da OK en todos.
+  - Escribimos el análisis formal del montículo en la sección 3 del informe final: invariante con cuantificadores, `registrar` y `atender` en $O(\log n)$, el resto en $O(1)$, y el diagrama Mermaid.
+- Qué quedó pendiente: `medir.cpp` (Diego), llenar la tabla de resumen de costos con el análisis del montículo y completar las secciones 1, 2 y 6 del informe final.
+
+## 2026-11-14
+
 - Quiénes: Mateo Rivera Prados
 - Qué hicimos:
   - Creamos la interfaz común `codigo/sala.h` para la cola y el montículo: se renombró `cola.h` y se adaptaron `cola.cpp` y `principal.cpp` a los nombres nuevos (`Sala`, `crearSala`, `destruirSala`), para que el mismo programa funcione con cualquiera de las dos.
