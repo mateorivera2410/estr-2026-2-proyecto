@@ -13,7 +13,7 @@ proyecto_monticulo: principal.cpp monticulo.cpp sala.h
 medir_cola: medir.cpp cola.cpp sala.h
 	$(CC) $(CFLAGS) medir.cpp cola.cpp -o medir_cola
 
-medir_monticulo: medir.cpp sala.h
+medir_monticulo: medir.cpp monticulo.cpp sala.h
 	$(CC) $(CFLAGS) medir.cpp monticulo.cpp -o medir_monticulo
 
 # Corre cada entrada de ../datos/ y compara con su salida esperada

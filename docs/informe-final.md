@@ -11,6 +11,7 @@
 (Qué operaciones expone cada una y por qué la interfaz es la misma.)
 
 ## 3. Análisis formal de complejidad
+
 ### Cola circular: el invariante
 
 Para abreviar, sea $\text{pos}(i) = (\text{frente} + i) \bmod \text{capacidad}$ la casilla del arreglo donde está el paciente que ocupa el lugar $i$ de la fila, contando desde 0. El invariante de la cola es:
@@ -32,6 +33,7 @@ Es decir: la cantidad y el frente están dentro de sus rangos, y los pacientes q
 - `registrar` lo **preserva**: pone al paciente nuevo en $\text{pos}(\text{cantidad})$, justo detrás del último, y como su `llegada` es el número de la orden actual, es mayor que la de todos los que ya esperan. Solo suma si la sala no está llena, así que `cantidad` no pasa de la capacidad.
 - `atender` lo **preserva**: saca al de $\text{pos}(0)$ y avanza `frente` con el módulo, así que el que era el lugar 1 pasa a ser el lugar 0 y los demás siguen en el mismo orden. Solo resta si hay alguien, así que `cantidad` no queda negativa.
 - `cantidad`, `estaVacia` y `estaLlena` no cambian nada, así que lo preservan.
+
 ### Cola circular: `registrar`
 
 **Teorema.** Sea $n$ el número de pacientes que esperan en la sala. El tiempo de `registrar` en la cola circular cumple $T(n) \in O(1)$, y su espacio extra cumple $S(n) \in O(1)$.
@@ -141,6 +143,12 @@ $$S(N) = N + 1 \leq N + N = 2N \quad \text{para todo } N \geq 1.$$
 Ninguna recorre el arreglo, porque el número de pacientes ya está guardado en el campo `cantidad`, que `registrar` y `atender` mantienen al día. Ninguna reserva memoria. Entonces, para las tres, $T(n) \leq 2 \leq 2 \cdot 1$ y $S(n) = 0 \leq 1 \cdot 1$ para todo $n \geq 1$.
 
 *Conclusión.* Por lo tanto, las tres cumplen $T(n) \in O(1)$ con testigos $c = 2$ y $k = 1$, y $S(n) \in O(1)$ con testigos $c = 1$ y $k = 1$.
+
+Resumen de costos:
+
+| Operación | Desde cero | De la biblioteca | Por qué |
+|---|---|---|---|
+|  |  |  |  |
 
 ## 4. Experimentos
 
