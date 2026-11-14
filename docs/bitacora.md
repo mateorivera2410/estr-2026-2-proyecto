@@ -1,5 +1,15 @@
 # Bitácora
 
+## 2026-11-14
+
+- Quiénes: Mateo Rivera Prados
+- Qué hicimos:
+  - Creamos la interfaz común `codigo/sala.h` para la cola y el montículo: se renombró `cola.h` y se adaptaron `cola.cpp` y `principal.cpp` a los nombres nuevos (`Sala`, `crearSala`, `destruirSala`), para que el mismo programa funcione con cualquiera de las dos.
+  - Rehicimos el `Makefile`: `make` produce `proyecto_cola`, `proyecto_monticulo`, `medir_cola` y `medir_monticulo`, y `make pruebas` corre los casos de `datos/` con la cola y los de `datos/monticulo/` con el montículo. Se actualizó el `.gitignore` para los nuevos ejecutables y los `.out` del montículo.
+  - Escribimos el análisis formal de la cola en el informe final: el invariante con cuantificadores y la demostración de las 7 operaciones, en tiempo y en espacio, con sus testigos.
+  - Decisiones del grupo para la final: misma interfaz para las dos estructuras; en el montículo, si dos pacientes tienen la misma urgencia, pasa el que llegó primero; los casos del montículo van en `datos/monticulo/`; `medir.cpp` mide con `clock()`, urgencias con una fórmula fija y `priority_queue` tal cual.
+- Qué quedó pendiente: Secciones 1, 2 y 6 del informe final, llenar la tabla resumen con el análisis del montículo, y revisar la integración cuando Pit suba `monticulo.cpp` y Diego `medir.cpp`.
+
 ## 2026-11-02
 
 - Quiénes: Mateo Rivera Prados
