@@ -1,5 +1,14 @@
 # Bitácora
 
+## 2026-11-15
+
+- Quiénes: Diego Alejandro Calvo
+- Qué hicimos:
+  - Escribimos `codigo/medir.cpp`: mide la sala (cola o montículo, según con cuál se compile) contra `priority_queue`, con la misma secuencia de órdenes para las tres. De cada 5 órdenes 3 son `LLEGA` y 2 `ATIENDE`, las urgencias salen de una fórmula fija y cada tamaño se repite 3 veces.
+  - Con `medir.cpp`, `make` vuelve a compilar los 4 programas sin advertencias.
+  - Lo probamos con los 5 tamaños: con la cola, los de urgencia 5 y 1 esperan casi lo mismo; con el montículo, los de urgencia 5 esperan unas 2 órdenes y ningún paciente de urgencia 1 alcanza a ser atendido, por eso `espera_u1` sale en 0.0.
+- Qué quedó pendiente: Correr los experimentos, guardar los resultados en `datos/resultados.csv` y escribir las secciones 4 y 5 del informe final.
+
 ## 2026-11-14
 
 - Quiénes: Jan Pieter Lelie
