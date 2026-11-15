@@ -344,11 +344,18 @@ Ninguna recorre el arreglo: el número de pacientes está guardado en `cantidad`
 
 **Referencias.** Cormen, Leiserson, Rivest y Stein, *Introduction to Algorithms*, 4.ª ed.: §6.1 (montículos) y §6.5 (colas de prioridad). Clase 24 (altura de un árbol binario completo) y Clase 26 (montículo en arreglo, subir y bajar).
 
-Resumen de costos:
+Resumen de costos, con $n$ el número de pacientes que esperan y $N$ la capacidad de la sala:
 
-| Operación | Desde cero | De la biblioteca | Por qué |
-|---|---|---|---|
-|  |  |  |  |
+| Operación | Cola circular | Montículo | `priority_queue` | Por qué |
+|---|---|---|---|---|
+| `registrar` / `push` | $O(1)$ | $O(\log n)$ | $O(\log n)$ amortizado | La cola calcula la casilla con el módulo y no recorre nada. El montículo y `priority_queue` suben al paciente nuevo, a lo sumo un nivel por paso, y el árbol tiene altura $\lfloor \log_2 n \rfloor$. En `priority_queue` es amortizado porque el vector de adentro a veces crece y copia todo |
+| `atender` / `top` + `pop` | $O(1)$ | $O(\log n)$ | $O(\log n)$ | La cola solo avanza `frente`. El montículo y `priority_queue` pasan el último a la raíz y lo bajan, a lo sumo un nivel por paso |
+| `cantidad`, `estaVacia`, `estaLlena` / `size`, `empty` | $O(1)$ | $O(1)$ | $O(1)$ | El número de pacientes está guardado; no hay que contar |
+| `crearSala` (tiempo) | $O(1)$ | $O(1)$ | — | Reserva el arreglo de una vez, sin recorrerlo |
+| `destruirSala` (tiempo) | $O(1)$ | $O(1)$ | — | Libera el arreglo como un solo bloque |
+| Espacio total | $O(N)$ | $O(N)$ | $O(n)$ | La sala reserva sus $N$ casillas al crearse; `priority_queue` crece a medida que llegan pacientes |
+
+Los costos de `priority_queue` son los de la [referencia de la biblioteca](https://en.cppreference.com/w/cpp/container/priority_queue), y coinciden con los del montículo porque por dentro es un montículo binario (Clase 26).
 
 ## 4. Experimentos
 
