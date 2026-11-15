@@ -7,39 +7,51 @@
 
 int main()
 {
-    int totalOrdenes = 0; //cuantas ordenes vienen
-    int reloj = 0;//numero de la orden que se esta leyendo, sube 1 con cada orden
-    char orden[20];//la palabra de la orden: LLEGA, ATIENDE, ESPERAN o PROMEDIO
-    Paciente paciente; //el paciente que llega o el que se atiende
+    int totalOrdenes = 0; // cuantas ordenes vienen
+    int reloj = 0;        // numero de la orden que se esta leyendo, sube 1 con cada orden
+    char orden[20];       // la palabra de la orden: LLEGA, ATIENDE, ESPERAN o PROMEDIO
+    Paciente paciente;    // el paciente que llega o el que se atiende
     Sala *salaEspera = NULL;
-    int pacientesAtendidos = 0; //cuantos pacientes ya se atendieron
-    long long sumaEsperas = 0; //suma de lo que esperaron los atendidos (long long porque puede crecer mucho)
+    int pacientesAtendidos = 0; // cuantos pacientes ya se atendieron
+    long long sumaEsperas = 0;  // suma de lo que esperaron los atendidos (long long porque puede crecer mucho)
 
     if (scanf("%d", &totalOrdenes) == 1)
     {
-        //a lo sumo llegan totalOrdenes pacientes, asi que con esa capacidad nunca se llena
+        // a lo sumo llegan totalOrdenes pacientes, asi que con esa capacidad nunca se llena
         salaEspera = crearSala(totalOrdenes);
         if (salaEspera != NULL)
         {
-            //se lee hasta completar las ordenes o hasta que se acabe la entrada
+            // se lee hasta completar las ordenes o hasta que se acabe la entrada
             while (reloj < totalOrdenes && scanf("%19s", orden) == 1)
             {
                 reloj++;
                 if (strcmp(orden, "LLEGA") == 0)
                 {
-                    //se guarda en que orden llego para despues saber cuanto espero
-                    if (scanf("%50s %d", paciente.nombre, &paciente.urgencia) == 2)
+                    // se lee el nombre: solo se guardan las primeras 50 letras
+                    if (scanf("%50s", paciente.nombre) == 1)
                     {
-                        paciente.llegada = reloj;
-                        registrar(salaEspera, paciente);
+                        // si el nombre tenia mas de 50 letras, se descarta lo que sobro de esa palabra,
+                        // para que no se lea como urgencia ni como si fueran ordenes
+                        int caracter = getchar();
+                        while (caracter != ' ' && caracter != '\n' && caracter != '\t' && caracter != EOF)
+                        {
+                            caracter = getchar();
+                        }
+                        // se guarda en que orden llego para despues saber cuanto espero
+                        if (scanf("%d", &paciente.urgencia) == 1)
+                        {
+                            paciente.llegada = reloj;
+                            registrar(salaEspera, paciente);
+                        }
                     }
                 }
+
                 else if (strcmp(orden, "ATIENDE") == 0)
                 {
-                    //atender devuelve 1 si habia alguien y lo deja en paciente
+                    // atender devuelve 1 si habia alguien y lo deja en paciente
                     if (atender(salaEspera, &paciente) == 1)
                     {
-                        //lo que espero = la orden que lo atiende menos la orden en que llego
+                        // lo que espero = la orden que lo atiende menos la orden en que llego
                         sumaEsperas += reloj - paciente.llegada;
                         pacientesAtendidos++;
                         printf("%s\n", paciente.nombre);
@@ -51,12 +63,12 @@ int main()
                 }
                 else if (strcmp(orden, "ESPERAN") == 0)
                 {
-                    //cuantos pacientes siguen en la sala
+                    // cuantos pacientes siguen en la sala
                     printf("%d\n", cantidad(salaEspera));
                 }
                 else if (strcmp(orden, "PROMEDIO") == 0)
                 {
-                    //si nadie ha sido atendido se escribe 0.0 (decision del grupo)
+                    // si nadie ha sido atendido se escribe 0.0 (decision del grupo)
                     double promedioEspera = 0.0;
                     if (pacientesAtendidos > 0)
                     {
@@ -66,7 +78,7 @@ int main()
                     printf("%.1f\n", promedioEspera);
                 }
             }
-            //se libera la memoria que reservo crearSala
+            // se libera la memoria que reservo crearSala
             destruirSala(salaEspera);
         }
     }
