@@ -352,30 +352,88 @@ Resumen de costos:
 
 ## 4. Experimentos
 
-Máquina, compilador y banderas con que se midió; cómo se generaron las
-entradas; cuántas repeticiones por tamaño.
+**Dónde se midió.** En un MacBook Pro con procesador Apple M5 y macOS 26.6.2. El compilador es el `g++` de macOS, que en realidad es Apple clang 21.0.0 (clang-2100.1.1.101, para arm64), con las banderas del `Makefile`: `-Wall -Wextra -O2`. Las tres estructuras se midieron en la misma máquina, con el mismo compilador y en la misma sesión.
 
-| $n$ | desde cero (ms) | biblioteca (ms) |
-|---|---|---|
-| 1000 |  |  |
-| 5000 |  |  |
-| 10000 |  |  |
-| 50000 |  |  |
-| 100000 |  |  |
+**Cómo se generaron las entradas.** El programa `codigo/medir.cpp` arma las órdenes él mismo, sin leer archivos. Para un tamaño $N$ hay $N$ órdenes, numeradas $i = 1, \ldots, N$, y ese número es el reloj y la `llegada` del paciente:
+
+- Si $i \bmod 5 \in \{0, 1, 2\}$, la orden es `LLEGA`; si $i \bmod 5 \in \{3, 4\}$, es `ATIENDE`. De cada 5 órdenes, 3 registran y 2 atienden, así que la sala gana un paciente cada 5 órdenes y llega a tener hasta $N/5$.
+- La urgencia sale de la fórmula fija $u(i) = 1 + \big((7919 \cdot i) \bmod 100003\big) \bmod 5$. Como $100003$ es primo y mayor que $N$, la fórmula reparte las urgencias casi por igual: con $N = 100000$, cada urgencia sale en el 20 % de las llegadas.
+- Las tres estructuras reciben exactamente la misma secuencia, así que lo único que cambia entre ellas es la estructura.
+
+`medir.cpp` solo usa las funciones de `sala.h`, así que se compila sin cambios con `cola.cpp` (`medir_cola`) y con `monticulo.cpp` (`medir_monticulo`). Cada uno de los dos programas mide además `priority_queue`, usada tal cual; el tiempo de `priority_queue` de la tabla es el promedio de lo que midieron los dos.
+
+**Repeticiones.** Cada tamaño se corre 3 veces con cada estructura y se reporta el promedio del tiempo, medido con `clock()`. Las esperas salen iguales en las tres corridas, porque las entradas son siempre las mismas. Los datos están en `datos/resultados.csv`, y se reproducen con `make medir_cola medir_monticulo` y corriendo `./medir_cola` y `./medir_monticulo` desde `codigo/`.
+
+**Tiempos.** Tiempo total de procesar las $N$ órdenes, en milisegundos:
+
+| $N$ | cola circular (ms) | montículo (ms) | `priority_queue` (ms) |
+|---|---|---|---|
+| 1000 | 0.009 | 0.047 | 0.032 |
+| 5000 | 0.032 | 0.290 | 0.162 |
+| 10000 | 0.056 | 0.686 | 0.354 |
+| 50000 | 0.315 | 4.384 | 2.236 |
+| 100000 | 0.600 | 9.158 | 4.586 |
 
 ```mermaid
 xychart-beta
-  title "Tiempo contra tamaño de la entrada"
-  x-axis [1000, 5000, 10000, 50000, 100000]
-  y-axis "milisegundos" 0 --> 100
-  line [1, 5, 12, 60, 130]
-  line [1, 4, 9, 45, 95]
+  title "Tiempo total contra número de órdenes"
+  x-axis "N (órdenes)" [1000, 5000, 10000, 50000, 100000]
+  y-axis "milisegundos" 0 --> 10
+  line [0.009, 0.032, 0.056, 0.315, 0.600]
+  line [0.047, 0.290, 0.686, 4.384, 9.158]
+  line [0.032, 0.162, 0.354, 2.236, 4.586]
 ```
+
+La gráfica no dibuja leyenda: la línea de arriba es el montículo, la del medio `priority_queue` y la de abajo, casi pegada al cero, la cola circular. El eje $x$ pone los cinco tamaños a la misma distancia aunque no estén igual de separados, así que la gráfica no está a escala en ese eje.
+
+**Esperas.** Espera promedio, en órdenes, de los pacientes atendidos con urgencia 5 y con urgencia 1:
+
+| $N$ | cola: urgencia 5 | cola: urgencia 1 | montículo: urgencia 5 | montículo: urgencia 1 |
+|---|---|---|---|---|
+| 1000 | 166.8 | 165.0 | 2.1 | 0.0 |
+| 5000 | 834.7 | 838.2 | 2.1 | 0.0 |
+| 10000 | 1669.0 | 1663.6 | 2.1 | 0.0 |
+| 50000 | 8334.9 | 8330.3 | 2.1 | 0.0 |
+| 100000 | 16667.6 | 16672.4 | 2.1 | 0.0 |
+
+En el montículo, el 0.0 de urgencia 1 no quiere decir que esos pacientes esperaron 0: quiere decir que **ninguno alcanzó a ser atendido**, y el programa escribe 0.0 cuando no hay atendidos para promediar. Se explica en la sección 5.
 
 ## 5. Lo medido contra lo predicho
 
-(¿Coincide la curva con la cota? Donde no coincida, expliquen por qué:
-la constante oculta, la memoria caché, el crecimiento del vector.)
+### Los tiempos
+
+El análisis de la sección 3 dice que en la cola cada operación cuesta $O(1)$, así que procesar $N$ órdenes cuesta $O(N)$: si $N$ se multiplica por 10, el tiempo debería multiplicarse por cerca de 10. En el montículo, `registrar` y `atender` cuestan $O(\log n)$, con $n$ los pacientes que hay en la sala, y la sala llega a tener a lo sumo $N/5$; entonces el total es $O(N \log N)$, y al pasar de $N = 10000$ a $N = 100000$ el tiempo debería multiplicarse por cerca de
+
+$$10 \cdot \frac{\log_2 (100000/5)}{\log_2 (10000/5)} = 10 \cdot \frac{\log_2 20000}{\log_2 2000} \approx 10 \cdot \frac{14.3}{11.0} \approx 13.0$$
+
+`priority_queue` también es un montículo binario, así que se predice lo mismo que para el nuestro. Lo medido, dividiendo el tiempo del tamaño grande entre el del pequeño:
+
+| De $N$ a $N$ | cola | montículo | `priority_queue` | predicho para la cola | predicho para los montículos |
+|---|---|---|---|---|---|
+| 10000 → 100000 | ×10.7 | ×13.3 | ×13.0 | ×10 | ×13.0 |
+| 50000 → 100000 | ×1.9 | ×2.1 | ×2.1 | ×2 | ×2.15 |
+
+Con los tamaños grandes, lo medido coincide con lo predicho: la cola crece de forma lineal, y el montículo y `priority_queue` crecen un poco más rápido, como $N \log N$.
+
+**Donde no coincide, y por qué:**
+
+1. **Con los tamaños pequeños.** De $N = 1000$ a $N = 10000$ la cola se multiplicó por 6.2 y no por 10, y el montículo por 14.6 en vez de cerca de 13. Con 1000 órdenes los tiempos son de milésimas de milisegundo (0.009 ms con la cola), muy cerca de lo mínimo que `clock()` alcanza a distinguir, y pesan más el error de medición y los costos fijos de cada corrida que el trabajo que depende de $N$. Por eso las razones que sirven para comparar con el análisis son las de los tamaños grandes.
+2. **La constante oculta entre la cola y el montículo.** La notación $O$ no dice cuánto cuesta cada operación, solo cómo crece. Con $N = 100000$ el montículo tardó 15.3 veces lo que la cola. Esa diferencia es del orden del número de niveles del árbol: con 20000 pacientes el árbol tiene $\lfloor \log_2 20000 \rfloor + 1 = 15$ niveles, y en cada nivel `subir` o `bajar` hacen comparaciones e intercambios, mientras que la cola hace siempre un número fijo de operaciones.
+3. **Nuestro montículo contra `priority_queue`.** Los dos son $O(\log n)$ por operación, pero `priority_queue` tardó la mitad (4.586 ms contra 9.158 ms con $N = 100000$). La cota tampoco dice nada de esta constante. Nuestro `intercambiar` copia el `Paciente` completo, de 60 bytes (el nombre de 51 caracteres y dos enteros), tres veces en cada nivel. La implementación de la biblioteca no intercambia en cada nivel: guarda aparte al paciente que se mueve, corre a los demás un nivel (una copia por nivel en vez de tres) y lo pone en su lugar al final. Además, como `priority_queue` es una plantilla, el compilador la mete completa dentro de `medir.cpp` y la optimiza ahí, mientras que las funciones del montículo están en otro archivo y se llaman una por una. Y eso que `priority_queue` va agrandando su vector a medida que llegan pacientes, mientras que la sala reserva sus $N$ casillas de una vez.
+
+### Las esperas
+
+**Con la cola, los de urgencia 5 y los de urgencia 1 esperan casi lo mismo** (16667.6 y 16672.4 órdenes con $N = 100000$), porque la cola no mira la urgencia. Esto también se puede predecir. El paciente número $k$ llega cerca de la orden $5k/3$, porque llegan 3 de cada 5, y como la cola atiende por orden de llegada, lo atiende la $k$-ésima `ATIENDE`, cerca de la orden $5k/2$, porque se atiende a 2 de cada 5. Su espera es
+
+$$\frac{5k}{2} - \frac{5k}{3} = \frac{5k}{6}.$$
+
+Hasta el final se atiende a $2N/5$ pacientes, así que el promedio de $k$ es $N/5$, y la espera promedio es $\frac{5}{6} \cdot \frac{N}{5} = \frac{N}{6}$. Con $N = 100000$ da 16666.7, que coincide con lo medido. La espera crece con $N$ porque la sala se llena cada vez más y nadie se salta la fila.
+
+**Con el montículo, los de urgencia 5 esperan 2.1 órdenes, sin importar $N$.** En cada bloque de 5 órdenes llegan pacientes en las órdenes $5m+1$, $5m+2$ y $5m+5$, y se atiende en $5m+3$ y $5m+4$. Un paciente de urgencia 5 pasa en la siguiente `ATIENDE`: si llega en $5m+1$ espera 2, si llega en $5m+2$ espera 1 y si llega en $5m+5$ espera 3 (hasta la orden $5m+8$). El promedio es $(2 + 1 + 3)/3 = 2$, y el 0.1 de más es de las veces que coinciden dos pacientes de urgencia 5.
+
+**Con el montículo, ningún paciente de urgencia 1 es atendido.** Cada 5 órdenes llegan 3 pacientes, en promedio $0.6$ de cada urgencia, y se atiende a 2. Los de urgencia 5, 4 y 3 suman $3 \cdot 0.6 = 1.8$ por cada 5 órdenes, menos que las 2 atenciones, así que siempre se atienden. Las $0.2$ atenciones que sobran se las llevan los de urgencia 2, que llegan $0.6$: se van acumulando, y siempre hay alguno esperando. Por eso nunca le toca a un paciente de urgencia 1. Ninguno fue atendido y el programa escribe 0.0, pero en realidad se quedaron esperando hasta el final: es lo que se llama **inanición**.
+
+Esto es lo que pedía explicar el enunciado: el montículo cuesta más por operación ($O(\log n)$ contra $O(1)$, y 15.3 veces más tiempo con $N = 100000$), y aun así atiende mejor a quien debe, porque los de urgencia 5 esperan 2.1 órdenes en vez de 16667. El precio lo pagan los de urgencia baja, que cuando llegan más pacientes de los que se atienden pueden no ser atendidos nunca.
 
 ## 6. Conclusiones
 
