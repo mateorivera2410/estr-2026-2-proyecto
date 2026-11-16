@@ -2,6 +2,15 @@
 
 ## 2026-11-15
 
+- Quiénes: Mateo Rivera Prados
+- Qué hicimos:
+  - Corregimos lo que señaló la realimentación del avance: `principal.cpp` ahora descarta lo que sobra de un nombre de más de 50 letras, para que no se desfase el reloj (caso `caso7-limite-nombre-largo`), y agregamos `codigo/prueba_cola.cpp`, que usa una sala de 3 casillas para que el módulo de la cola dé la vuelta y se ejerzan las ramas de sala llena y vacía. `make pruebas` la corre.
+  - Escribimos las secciones 1, 2 y 6 del informe final, y la tabla resumen de costos de las tres estructuras. En la sección 2, cada caso límite quedó ligado con la rama del código que ejercita.
+  - Revisión final: compila sin advertencias, `make pruebas` da 22 OK y no hay errores de memoria.
+- Qué quedó pendiente: Entregar el enlace en el aula digital y preparar la sustentación.
+
+## 2026-11-15
+
 - Quiénes: Diego Alejandro Calvo
 - Qué hicimos:
   - Escribimos `codigo/medir.cpp`: mide la sala (cola o montículo, según con cuál se compile) contra `priority_queue`, con la misma secuencia de órdenes para las tres. De cada 5 órdenes 3 son `LLEGA` y 2 `ATIENDE`, las urgencias salen de una fórmula fija y cada tamaño se repite 3 veces.
