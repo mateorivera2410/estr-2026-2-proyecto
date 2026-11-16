@@ -285,6 +285,8 @@ $$
 
 Es decir: el montículo está bien en todas partes salvo, quizás, entre $i$ y sus hijos; y el padre de $i$ ya va antes que los hijos de $i$. Al empezar, $i = 0$ (el último paciente acaba de pasar a la raíz): la primera parte sale de que los demás pares padre-hijo no se tocaron, y la segunda es vacía porque la raíz no tiene padre. Si algún hijo de $i$ existe y va antes que el paciente de $i$, se intercambia con el que va antes de los dos; ese hijo, ahora en $i$, va antes que su hermano (por haberlo elegido) y que el paciente bajado, que quedó en la casilla del hijo; además va después que el padre de $i$ (segunda parte). Así $J_{\text{bajar}}$ se cumple para $i :=$ la casilla del hijo. El ciclo termina cuando ningún hijo existente va antes que el paciente de $i$; entonces $\text{datos}[i] \preceq$ sus hijos, y $J_{\text{bajar}}$ da $I_{\text{mont}}$ completo.
 
+El montículo binario sobre arreglo es el de Thareja, capítulo 12, sección 12.1; `registrar` corresponde a la inserción (§12.1.1) y `atender` al borrado de la raíz (§12.1.2).
+
 ### Montículo: funciones auxiliares
 
 `vaAntes`, `intercambiar`, `subir` y `bajar` son funciones internas del archivo (`static`) que usan `registrar` y `atender`. No tienen recursión: se llaman una a la vez y cada una termina antes de volver a quien la llamó.
@@ -533,7 +535,7 @@ Esto es lo que pedía explicar el enunciado: el montículo cuesta más por opera
 
 ## Referencias
 
-- R. Thareja. *Data Structures Using C*. 2.ª ed. Oxford University Press, 2014. Capítulo 8 (colas), sección 8.4.1 (colas circulares).
+- R. Thareja. *Data Structures Using C*. 2.ª ed. Oxford University Press, 2014. Capítulo 8 (colas), sección 8.4.1 (colas circulares); capítulo 12 (montículos), sección 12.1 (montículos binarios), §12.1.1 (insertar) y §12.1.2 (borrar).
 - T. H. Cormen, C. E. Leiserson, R. L. Rivest y C. Stein. *Introduction to Algorithms*. 4.ª ed. MIT Press, 2022. §6.1 (montículos) y §6.5 (colas de prioridad).
 - C. Delgado. Notas del curso Estructuras de Datos 2026-2, Pontificia Universidad Javeriana Cali: Clase 10 (interfaz e implementación), Clase 11 (TAD Cola), Clase 20 (medir con `clock()`), Clase 24 (altura de un árbol binario) y Clase 26 (montículo y cola de prioridad).
 - cppreference.com. [`std::priority_queue`](https://en.cppreference.com/w/cpp/container/priority_queue).
