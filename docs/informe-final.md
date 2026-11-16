@@ -115,7 +115,7 @@ La cola circular sobre arreglo es la de Thareja, capítulo 8, sección 8.4.1.
 
 **Teorema.** Sea $n$ el número de pacientes que esperan en la sala. El tiempo de `registrar` en la cola circular cumple $T(n) \in O(1)$, y su espacio extra cumple $S(n) \in O(1)$.
 
-**Demostración.** Se procede de forma directa: se cuentan las operaciones elementales en el peor caso, que es cuando la sala no está llena y el paciente sí entra, porque es cuando se ejecutan todas las líneas.
+**Estrategia.** Se procede de forma directa: se cuentan las operaciones elementales en el peor caso, que es cuando la sala no está llena y el paciente sí entra, porque es cuando se ejecutan todas las líneas.
 
 *Desarrollo.* `registrar` no tiene ciclos ni llamadas recursivas: cada línea se ejecuta a lo sumo una vez. Se cuentan las asignaciones, comparaciones, operaciones aritméticas y retornos:
 
@@ -142,7 +142,7 @@ En espacio, `registrar` solo usa dos variables enteras (`ok` y `pos`) y la copia
 
 **Teorema.** Sea $n$ el número de pacientes que esperan en la sala. El tiempo de `atender` en la cola circular cumple $T(n) \in O(1)$, y su espacio extra cumple $S(n) \in O(1)$.
 
-**Demostración.** Se procede de forma directa: se cuentan las operaciones elementales en el peor caso, que es cuando la sala no está vacía y sí se atiende a alguien, porque es cuando se ejecutan todas las líneas.
+**Estrategia.** Se procede de forma directa: se cuentan las operaciones elementales en el peor caso, que es cuando la sala no está vacía y sí se atiende a alguien, porque es cuando se ejecutan todas las líneas.
 
 *Desarrollo.* `atender` no tiene ciclos ni llamadas recursivas: cada línea se ejecuta a lo sumo una vez.
 
@@ -169,7 +169,7 @@ En espacio, `atender` solo usa la variable entera `ok` y el puntero `p` que reci
 
 **Teorema.** Sea $N$ la capacidad de la sala. El tiempo de `crearSala` cumple $T(N) \in O(1)$, y su espacio cumple $S(N) \in O(N)$.
 
-**Demostración.** Se procede de forma directa: se cuentan las operaciones en el peor caso, que es cuando la capacidad llega menor que 1 y los dos `malloc` salen bien, porque es cuando se ejecutan todas las líneas. Para el espacio se cuentan las casillas que se reservan. El costo de `malloc` se toma como constante.
+**Estrategia.** Se procede de forma directa: se cuentan las operaciones en el peor caso, que es cuando la capacidad llega menor que 1 y los dos `malloc` salen bien, porque es cuando se ejecutan todas las líneas. Para el espacio se cuentan las casillas que se reservan. El costo de `malloc` se toma como constante.
 
 *Desarrollo.* `crearSala` no tiene ciclos: cada línea se ejecuta a lo sumo una vez.
 
@@ -197,7 +197,7 @@ $$S(N) = N + 1 \leq N + N = 2N \quad \text{para todo } N \geq 1.$$
 
 **Teorema.** Sea $N$ la capacidad de la sala. El tiempo de `destruirSala` cumple $T(N) \in O(1)$, y su espacio extra cumple $S(N) \in O(1)$.
 
-**Demostración.** Se procede de forma directa: se cuentan las operaciones en el peor caso, que es cuando la sala existe y se liberan sus dos bloques. El costo de `free` se toma como constante.
+**Estrategia.** Se procede de forma directa: se cuentan las operaciones en el peor caso, que es cuando la sala existe y se liberan sus dos bloques. El costo de `free` se toma como constante.
 
 *Desarrollo.* La función compara `c` con `NULL` (1 operación) y hace dos llamadas a `free` (2 operaciones): una libera el arreglo `datos` completo como un solo bloque, sin recorrer sus $N$ casillas, y la otra libera la estructura `Sala`. No tiene ciclos y no reserva memoria. Entonces $T(N) = 3 \leq 3 \cdot 1$ y $S(N) = 0 \leq 1 \cdot 1$ para todo $N \geq 1$.
 
@@ -207,7 +207,7 @@ $$S(N) = N + 1 \leq N + N = 2N \quad \text{para todo } N \geq 1.$$
 
 **Teorema.** Sea $n$ el número de pacientes que esperan. El tiempo de cada una de las tres consultas `cantidad`, `estaVacia` y `estaLlena` cumple $T(n) \in O(1)$, y su espacio extra cumple $S(n) \in O(1)$.
 
-**Demostración.** Se procede de forma directa: cada consulta es una sola línea, y se cuentan sus operaciones.
+**Estrategia.** Se procede de forma directa: cada consulta es una sola línea, y se cuentan sus operaciones.
 
 *Desarrollo.*
 
@@ -300,7 +300,7 @@ Ninguna depende de $n$: solo comparan y copian un número fijo de campos. Entonc
 
 **Teorema.** Sea $n$ el número de pacientes en la sala cuando `registrar` termina (incluye al nuevo, $n \geq 1$). El tiempo de `registrar` en el montículo cumple $T(n) \in O(\log n)$, y su espacio extra cumple $S(n) \in O(1)$.
 
-**Demostración.** Se procede de forma directa: se cuentan las operaciones en el peor caso, que es cuando la sala no está llena y el paciente nuevo sube hasta la raíz, porque es cuando `subir` hace más vueltas. Se apoya en el teorema de la Clase 24: un árbol binario completo con $n$ nodos tiene altura $\lfloor \log_2 n \rfloor$. El montículo guardado en el arreglo es un árbol binario completo, y el paciente nuevo entra en la casilla $n - 1$, una hoja a profundidad a lo sumo $h = \lfloor \log_2 n \rfloor$. Cada vuelta de `subir` que intercambia lo sube un nivel, así que hay a lo sumo $h$ vueltas con intercambio.
+**Estrategia.** Se procede de forma directa: se cuentan las operaciones en el peor caso, que es cuando la sala no está llena y el paciente nuevo sube hasta la raíz, porque es cuando `subir` hace más vueltas. Se apoya en el teorema de la Clase 24: un árbol binario completo con $n$ nodos tiene altura $\lfloor \log_2 n \rfloor$. El montículo guardado en el arreglo es un árbol binario completo, y el paciente nuevo entra en la casilla $n - 1$, una hoja a profundidad a lo sumo $h = \lfloor \log_2 n \rfloor$. Cada vuelta de `subir` que intercambia lo sube un nivel, así que hay a lo sumo $h$ vueltas con intercambio.
 
 *Desarrollo.* Una vuelta de `subir` que intercambia cuesta:
 
@@ -341,7 +341,7 @@ En espacio, no hay recursión, así que no se acumulan marcos. En el momento de 
 
 **Teorema.** Sea $n$ el número de pacientes que esperan en la sala antes de `atender` ($n \geq 1$). El tiempo de `atender` en el montículo cumple $T(n) \in O(\log n)$, y su espacio extra cumple $S(n) \in O(1)$.
 
-**Demostración.** Se procede de forma directa: se cuentan las operaciones en el peor caso, que es cuando la sala no está vacía y el paciente que pasó a la raíz baja hasta una hoja. Después de sacar a uno quedan $n - 1$ nodos, un árbol binario completo cuya altura es $\lfloor \log_2 (n-1) \rfloor \leq \lfloor \log_2 n \rfloor = h$ (Clase 24; si $n = 1$ no queda nadie y `bajar` no intercambia). Cada vuelta de `bajar` que intercambia lo baja un nivel, así que hay a lo sumo $h$ vueltas con intercambio.
+**Estrategia.** Se procede de forma directa: se cuentan las operaciones en el peor caso, que es cuando la sala no está vacía y el paciente que pasó a la raíz baja hasta una hoja. Después de sacar a uno quedan $n - 1$ nodos, un árbol binario completo cuya altura es $\lfloor \log_2 (n-1) \rfloor \leq \lfloor \log_2 n \rfloor = h$ (Clase 24; si $n = 1$ no queda nadie y `bajar` no intercambia). Cada vuelta de `bajar` que intercambia lo baja un nivel, así que hay a lo sumo $h$ vueltas con intercambio.
 
 *Desarrollo.* Una vuelta de `bajar` que intercambia cuesta:
 
@@ -385,7 +385,7 @@ En espacio, tampoco hay recursión. En el momento de mayor uso están abiertas `
 
 **Teorema.** Sea $N$ la capacidad de la sala. El tiempo de `crearSala` en el montículo cumple $T(N) \in O(1)$, y su espacio cumple $S(N) \in O(N)$.
 
-**Demostración.** Se procede de forma directa. El código de `crearSala` del montículo es línea por línea el de la cola (el montículo también deja `frente = 0`, que aquí es el valor definitivo). El costo de `malloc` se toma como constante.
+**Estrategia.** Se procede de forma directa. El código de `crearSala` del montículo es línea por línea el de la cola (el montículo también deja `frente = 0`, que aquí es el valor definitivo). El costo de `malloc` se toma como constante.
 
 *Desarrollo.* No tiene ciclos y cada línea se ejecuta a lo sumo una vez: `capacidad < 1` y su asignación (2), `malloc` de la sala (2), `c != NULL` (1), `malloc` del arreglo (3), `datos == NULL` (1), los tres campos del `else` (3) y `return` (1). Ninguna depende de $N$: el arreglo se reserva de una vez y no se recorre. Entonces $T(N) = 13 \leq 13 \cdot 1$ para todo $N \geq 1$. En espacio se reserva una `Sala` de tamaño fijo y un arreglo de $N$ casillas, así que $S(N) = N + 1 \leq 2N$ para todo $N \geq 1$.
 
@@ -395,7 +395,7 @@ En espacio, tampoco hay recursión. En el momento de mayor uso están abiertas `
 
 **Teorema.** Sea $N$ la capacidad de la sala. El tiempo de `destruirSala` en el montículo cumple $T(N) \in O(1)$, y su espacio extra cumple $S(N) \in O(1)$.
 
-**Demostración.** Se procede de forma directa. El código es el mismo de la cola: comparar `c` con `NULL` (1) y dos llamadas a `free` (2), una para el arreglo completo como un solo bloque, sin recorrer sus $N$ casillas, y otra para la `Sala`. No tiene ciclos y no reserva memoria.
+**Estrategia.** Se procede de forma directa. El código es el mismo de la cola: comparar `c` con `NULL` (1) y dos llamadas a `free` (2), una para el arreglo completo como un solo bloque, sin recorrer sus $N$ casillas, y otra para la `Sala`. No tiene ciclos y no reserva memoria.
 
 *Desarrollo.* $T(N) = 3 \leq 3 \cdot 1$ y $S(N) = 0 \leq 1 \cdot 1$ para todo $N \geq 1$.
 
@@ -405,7 +405,7 @@ En espacio, tampoco hay recursión. En el momento de mayor uso están abiertas `
 
 **Teorema.** Sea $n$ el número de pacientes que esperan. El tiempo de cada una de las tres consultas cumple $T(n) \in O(1)$, y su espacio extra cumple $S(n) \in O(1)$.
 
-**Demostración.** Se procede de forma directa. Las tres consultas son iguales a las de la cola, una sola línea cada una.
+**Estrategia.** Se procede de forma directa. Las tres consultas son iguales a las de la cola, una sola línea cada una.
 
 *Desarrollo.*
 
