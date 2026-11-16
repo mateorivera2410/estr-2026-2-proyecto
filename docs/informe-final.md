@@ -521,5 +521,15 @@ Esto es lo que pedía explicar el enunciado: el montículo cuesta más por opera
 
 ## 6. Conclusiones
 
-(Cuál estructura conviene para este escenario y bajo qué condiciones
-cambiaría la respuesta.)
+## 6. Conclusiones
+
+**Para la clínica conviene el montículo.** La cola es más barata por operación ($O(1)$ contra $O(\log n)$, y en las mediciones 15 veces más rápida con $N = 100000$), pero no mira la urgencia: un paciente de urgencia 5 espera lo mismo que uno de urgencia 1, más de 16000 órdenes con $N = 100000$. Con el montículo ese mismo paciente espera 2.1 órdenes, sin importar cuántos pacientes haya. En una clínica lo que importa es que el más grave pase primero, y la diferencia de tiempo no se nota: con 100000 órdenes el montículo tardó menos de 10 milisegundos. Es lo que pedía mostrar el enunciado: el montículo cuesta más por operación y aun así atiende mejor a quien debe.
+
+**El costo del montículo es la inanición.** Cuando llegan más pacientes de los que se atienden, los de urgencia baja pueden no ser atendidos nunca: en nuestras mediciones no se atendió a ningún paciente de urgencia 1. Con la cola eso no pasa, porque todos terminan pasando en orden de llegada.
+
+**Cuándo cambiaría la respuesta:**
+
+- **Si se atienden tantos pacientes como llegan**, la sala casi nunca tiene más de uno o dos esperando, y la cola y el montículo atienden casi en el mismo orden. Ahí conviene la cola, que es más simple y más barata.
+- **Si todos los pacientes tienen la misma urgencia**, por ejemplo en una fila de trámites, el montículo con nuestro desempate atiende igual que la cola, por orden de llegada, pero más lento. Ahí también conviene la cola.
+- **Si la inanición no es aceptable**, el montículo tendría que cambiar: por ejemplo, subirle la urgencia a quien lleve mucho tiempo esperando. Eso es lo que plantea el propuesto 5 de la Clase 26 (un paciente que empeora): como la clave crece, el paciente tiene que subir, y si se sabe en qué casilla está cuesta $O(\log n)$ (CLRS, §6.5).
+- **Si se conociera un tope pequeño de pacientes**, en vez de reservar $N$ casillas se podría reservar ese tope, y la cola volvería a dar la vuelta, como en `prueba_cola`.
