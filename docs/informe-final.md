@@ -4,8 +4,6 @@
 
 ## 1. El escenario y el modelado
 
-## 1. El escenario y el modelado
-
 El programa simula la sala de espera de una clínica. Los pacientes van llegando y cada uno trae un nivel de urgencia entre 1 y 5, donde 5 es lo más grave. Mientras esperan quedan en la sala, y cuando hay un médico libre se llama al siguiente. Lo usaría la recepción de la clínica: para registrar a cada paciente que llega, saber a quién le toca pasar, cuántas personas siguen esperando y cuánto se han demorado en promedio los que ya fueron atendidos.
 
 De cada paciente se guarda su nombre (máximo 50 letras), su urgencia y el número de la orden en que llegó. No usamos un reloj de verdad: cada orden que se lee cuenta como una unidad de tiempo. Así, lo que esperó un paciente es
@@ -36,7 +34,58 @@ El promedio sale igual porque se atiende a los mismos pacientes en las mismas ó
 
 ## 2. Las dos estructuras
 
-(Qué operaciones expone cada una y por qué la interfaz es la misma.)
+### La interfaz común
+
+Las dos estructuras implementan la misma interfaz, `codigo/sala.h`: el mismo `struct Paciente`, el mismo `struct Sala` y las mismas siete funciones con las mismas firmas. Así `principal.cpp` y `medir.cpp` funcionan con cualquiera de las dos sin cambiar una línea; solo cambia con qué archivo se compilan, como en la Clase 10 con `racional.h` y sus dos implementaciones. El `Makefile` arma `proyecto_cola` y `medir_cola` con `cola.cpp`, y `proyecto_monticulo` y `medir_monticulo` con `monticulo.cpp`.
+
+| Operación | Qué hace | Precondición | Cola circular (`cola.cpp`) | Montículo (`monticulo.cpp`) |
+|---|---|---|---|---|
+| `crearSala(capacidad)` | Reserva la sala vacía; devuelve `NULL` si no hay memoria | Ninguna; si la capacidad es menor que 1 se usa 1 | Igual en las dos | Igual en las dos |
+| `destruirSala(c)` | Libera el arreglo y la sala | Ninguna; con `NULL` no hace nada | Igual en las dos | Igual en las dos |
+| `registrar(c, p)` | Mete a `p`; devuelve 1 si entró, 0 si la sala estaba llena | Que la sala exista | Lo pone al final de la fila, en $(\text{frente} + \text{cantidad}) \bmod \text{capacidad}$ | Lo pone en la primera casilla libre y lo sube |
+| `atender(c, p)` | Saca al siguiente y lo copia en `*p`; devuelve 1 si había alguien, 0 si estaba vacía | Que la sala exista | Saca al de `frente` y lo avanza con el módulo | Saca la raíz, pasa el último a la raíz y lo baja |
+| `cantidad(c)`, `estaVacia(c)`, `estaLlena(c)` | Consultan el campo `cantidad` | Que la sala exista | Igual en las dos | Igual en las dos |
+
+Los dos usan los mismos cuatro campos de `Sala` (`datos`, `capacidad`, `frente` y `cantidad`). En la cola, `frente` es la casilla del próximo a atender y se mueve con el módulo; en el montículo vale siempre 0, porque el próximo a atender siempre está en la raíz. El montículo reutiliza la `urgencia` y la `llegada` que ya traía `Paciente`.
+
+**Decisiones del grupo** (el enunciado no las fija):
+
+- La sala se crea con capacidad $N$, el número de órdenes de la entrada: como cada orden trae a lo sumo una llegada, nunca hay más de $N$ esperando.
+- Si la sala está llena, `registrar` devuelve 0 y el paciente no entra.
+- `PROMEDIO` sin atendidos escribe `0.0`.
+- Los nombres tienen máximo 50 letras; si llega uno más largo, se guardan las primeras 50 y se descarta el resto.
+- **Desempate en el montículo:** si dos pacientes tienen la misma urgencia, pasa el que llegó antes (menor `llegada`). Un montículo no respeta el orden de llegada por sí solo, y sin esta regla dos pacientes igual de graves saldrían en cualquier orden.
+
+### La cola circular por dentro
+
+Con capacidad 5: llegaron ana, beto y caro; se atendió a ana y a beto, y el frente pasó a la casilla 2; después llegaron dani (casilla 3), eli (casilla 4) y fer, que entró en $(2 + 3) \bmod 5 = 0$, la casilla que dejó libre ana. Quedan $\text{frente} = 2$ y $\text{cantidad} = 4$, y el siguiente entraría en $(2 + 4) \bmod 5 = 1$.
+
+```mermaid
+flowchart LR
+  c0["casilla 0<br/>fer"] --- c1["casilla 1<br/>libre<br/>(entra el siguiente)"] --- c2["casilla 2<br/>caro<br/>(frente)"] --- c3["casilla 3<br/>dani"] --- c4["casilla 4<br/>eli"]
+  c4 -. "el % da la vuelta" .-> c0
+```
+
+Como señaló la realimentación del avance, esto **no ocurre en el programa principal**: la sala se crea con capacidad $N$, y como a lo sumo llegan $N$ pacientes, la casilla $(\text{frente} + \text{cantidad})$ nunca alcanza la capacidad y el módulo nunca da la vuelta. Por eso agregamos `codigo/prueba_cola.cpp`, que crea una sala de **3 casillas** y hace exactamente esto: la llena, intenta meter un cuarto, atiende a uno, registra otro que entra en la casilla 0, y atiende hasta vaciarla. `make pruebas` la corre.
+
+El montículo por dentro, con su árbol y su arreglo, está dibujado en la sección 3, junto a su invariante.
+
+### Casos de prueba y la rama del código que ejercita cada uno
+
+Los casos de la cola están en `datos/` y los del montículo en `datos/monticulo/`, como pares `nombre.in` y `nombre.out`. `make pruebas` los corre todos, más `prueba_cola`. Todos dan la salida esperada.
+
+| Caso | Tipo | Estructura | Rama del código que ejercita |
+|---|---|---|---|
+| `caso1-ejemplo-enunciado` | Funcional | Las dos | El ejemplo del enunciado: con la cola sale ana primero; con el montículo, beto, por la comparación de urgencias de `vaAntes` (`monticulo.cpp:15`) |
+| `caso2-orden-de-llegada` | Funcional | Las dos | Con la cola, el orden de llegada aunque los urgentes lleguen después; con el montículo, `subir` y `bajar` reordenan |
+| `caso3-llegadas-y-atenciones-mezcladas` | Funcional | Las dos | Llegadas y atenciones intercaladas: la sala se vacía y se vuelve a llenar |
+| `caso4-limite-sala-vacia` | Límite | Las dos | `ATIENDE` con la sala vacía: `!estaVacia(c)` es falso (`cola.cpp:85`, `monticulo.cpp:173`), `atender` devuelve 0 y `principal.cpp:59` escribe `nadie espera`. `PROMEDIO` sin atendidos: `pacientesAtendidos > 0` es falso (`principal.cpp:73`) y escribe `0.0` |
+| `caso5-limite-un-solo-paciente` | Límite | Las dos | Con un solo paciente: en el montículo, `subir` no entra al ciclo porque `i > 0` es falso (`monticulo.cpp:40`), y `bajar` no encuentra hijos porque `izquierdo < cantidad` es falso (`monticulo.cpp:69`). El segundo `ATIENDE` vuelve a la rama de sala vacía |
+| `caso6-empate-de-urgencias` | Límite | Montículo | Pacientes con la misma urgencia: la rama del desempate, `a->llegada < b->llegada` (`monticulo.cpp:19`), hace pasar primero al que llegó antes |
+| `caso7-limite-nombre-largo` | Límite | Las dos | Un nombre de 60 letras: el ciclo que descarta lo que sobra (`principal.cpp:36`) evita que se lea como urgencia; se guarda con 50 letras y el reloj no se desfasa |
+| `prueba_cola` | Límite | Cola | Con 3 casillas: la rama de sala llena, `!estaLlena(c)` falso (`cola.cpp:67`), donde `registrar` devuelve 0; el módulo de `registrar` da la vuelta (`cola.cpp:70`, eli entra en la casilla 0), y el de `atender` también (`cola.cpp:90`, el frente pasa de 2 a 0) |
+
+No hay caso de **clave repetida**: la sala no busca pacientes por nombre, así que dos pacientes con el mismo nombre se atienden como dos pacientes distintos.
 
 ## 3. Análisis formal de complejidad
 
