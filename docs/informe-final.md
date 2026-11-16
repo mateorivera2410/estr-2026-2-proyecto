@@ -4,7 +4,35 @@
 
 ## 1. El escenario y el modelado
 
-(Del avance, corregido.)
+## 1. El escenario y el modelado
+
+El programa simula la sala de espera de una clínica. Los pacientes van llegando y cada uno trae un nivel de urgencia entre 1 y 5, donde 5 es lo más grave. Mientras esperan quedan en la sala, y cuando hay un médico libre se llama al siguiente. Lo usaría la recepción de la clínica: para registrar a cada paciente que llega, saber a quién le toca pasar, cuántas personas siguen esperando y cuánto se han demorado en promedio los que ya fueron atendidos.
+
+De cada paciente se guarda su nombre (máximo 50 letras), su urgencia y el número de la orden en que llegó. No usamos un reloj de verdad: cada orden que se lee cuenta como una unidad de tiempo. Así, lo que esperó un paciente es
+
+$$\text{espera} = \text{orden en que lo atienden} - \text{orden en que llegó}$$
+
+La primera línea de la entrada dice cuántas órdenes vienen, y después llegan las órdenes, una por línea:
+
+- `LLEGA nombre urgencia`: registra a un paciente. No escribe nada.
+- `ATIENDE`: llama al siguiente y escribe su nombre, o `nadie espera` si la sala está vacía.
+- `ESPERAN`: escribe cuántos pacientes hay en la sala.
+- `PROMEDIO`: escribe con un decimal cuánto esperaron en promedio los que ya fueron atendidos, o `0.0` si todavía no se ha atendido a nadie.
+
+**Dos formas de atender.** En el avance, la sala atendía por orden de llegada, con una cola circular. En la entrega final agregamos un montículo, que atiende primero al más urgente; si dos pacientes tienen la misma urgencia, pasa el que llegó antes. El mismo programa funciona con cualquiera de las dos, y solo cambia con cuál se compila. Un ejemplo con dos pacientes y seis órdenes:
+
+| Orden | Con la cola (por llegada) | Con el montículo (por urgencia) |
+|---|---|---|
+| 1. `LLEGA camila 1` | llega camila, con urgencia 1 | igual |
+| 2. `LLEGA andres 4` | llega andres, con urgencia 4 | igual |
+| 3. `ATIENDE` | `camila`: llegó primero, esperó $3 - 1 = 2$ | `andres`: es el más urgente, esperó $3 - 2 = 1$ |
+| 4. `ESPERAN` | `1` | `1` |
+| 5. `ATIENDE` | `andres`, que esperó $5 - 2 = 3$ | `camila`, que esperó $5 - 1 = 4$ |
+| 6. `PROMEDIO` | $(2 + 3)/2 =$ `2.5` | $(1 + 4)/2 =$ `2.5` |
+
+El promedio sale igual porque se atiende a los mismos pacientes en las mismas órdenes; lo que cambia es quién espera. Con la cola, andres, que estaba más grave, esperó 3 solo porque llegó después; con el montículo esperó 1, y la que esperó más fue camila, la menos urgente. Eso es lo que medimos en la sección 4: cuánto esperan los urgentes con cada estructura y cuánto cuesta cada una.
+
+**Correcciones respecto al avance.** Atendiendo la realimentación: un nombre de más de 50 letras ahora se guarda con sus primeras 50 y se descarta el resto, para que no se lea como urgencia ni como órdenes y no se desfase el reloj (caso `caso7-limite-nombre-largo`). Y como la sala se crea con capacidad igual al número de órdenes, en el programa principal el índice de la cola nunca da la vuelta; por eso agregamos `codigo/prueba_cola.cpp`, que usa una sala de 3 casillas para que el módulo sí se ejerza (sección 2).
 
 ## 2. Las dos estructuras
 
