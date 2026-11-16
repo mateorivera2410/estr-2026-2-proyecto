@@ -1,7 +1,5 @@
 # Informe final
 
-*(Parte del informe del avance, corregido con la realimentación.)*
-
 ## 1. El escenario y el modelado
 
 El programa simula la sala de espera de una clínica. Los pacientes van llegando y cada uno trae un nivel de urgencia entre 1 y 5, donde 5 es lo más grave. Mientras esperan quedan en la sala, y cuando hay un médico libre se llama al siguiente. Lo usaría la recepción de la clínica: para registrar a cada paciente que llega, saber a quién le toca pasar, cuántas personas siguen esperando y cuánto se han demorado en promedio los que ya fueron atendidos.
@@ -110,6 +108,8 @@ Es decir: la cantidad y el frente están dentro de sus rangos, y los pacientes q
 - `registrar` lo **preserva**: pone al paciente nuevo en $\text{pos}(\text{cantidad})$, justo detrás del último, y como su `llegada` es el número de la orden actual, es mayor que la de todos los que ya esperan. Solo suma si la sala no está llena, así que `cantidad` no pasa de la capacidad.
 - `atender` lo **preserva**: saca al de $\text{pos}(0)$ y avanza `frente` con el módulo, así que el que era el lugar 1 pasa a ser el lugar 0 y los demás siguen en el mismo orden. Solo resta si hay alguien, así que `cantidad` no queda negativa.
 - `cantidad`, `estaVacia` y `estaLlena` no cambian nada, así que lo preservan.
+
+La cola circular sobre arreglo es la de Thareja, capítulo 8, sección 8.4.1.
 
 ### Cola circular: `registrar`
 
@@ -419,7 +419,6 @@ Ninguna recorre el arreglo: el número de pacientes está guardado en `cantidad`
 
 *Conclusión.* Por lo tanto, las tres cumplen $T(n) \in O(1)$ con testigos $c = 2$ y $k = 1$, y $S(n) \in O(1)$ con testigos $c = 1$ y $k = 1$.
 
-**Referencias.** Cormen, Leiserson, Rivest y Stein, *Introduction to Algorithms*, 4.ª ed.: §6.1 (montículos) y §6.5 (colas de prioridad). Clase 24 (altura de un árbol binario completo) y Clase 26 (montículo en arreglo, subir y bajar).
 
 Resumen de costos, con $n$ el número de pacientes que esperan y $N$ la capacidad de la sala:
 
@@ -521,8 +520,6 @@ Esto es lo que pedía explicar el enunciado: el montículo cuesta más por opera
 
 ## 6. Conclusiones
 
-## 6. Conclusiones
-
 **Para la clínica conviene el montículo.** La cola es más barata por operación ($O(1)$ contra $O(\log n)$, y en las mediciones 15 veces más rápida con $N = 100000$), pero no mira la urgencia: un paciente de urgencia 5 espera lo mismo que uno de urgencia 1, más de 16000 órdenes con $N = 100000$. Con el montículo ese mismo paciente espera 2.1 órdenes, sin importar cuántos pacientes haya. En una clínica lo que importa es que el más grave pase primero, y la diferencia de tiempo no se nota: con 100000 órdenes el montículo tardó menos de 10 milisegundos. Es lo que pedía mostrar el enunciado: el montículo cuesta más por operación y aun así atiende mejor a quien debe.
 
 **El costo del montículo es la inanición.** Cuando llegan más pacientes de los que se atienden, los de urgencia baja pueden no ser atendidos nunca: en nuestras mediciones no se atendió a ningún paciente de urgencia 1. Con la cola eso no pasa, porque todos terminan pasando en orden de llegada.
@@ -533,3 +530,11 @@ Esto es lo que pedía explicar el enunciado: el montículo cuesta más por opera
 - **Si todos los pacientes tienen la misma urgencia**, por ejemplo en una fila de trámites, el montículo con nuestro desempate atiende igual que la cola, por orden de llegada, pero más lento. Ahí también conviene la cola.
 - **Si la inanición no es aceptable**, el montículo tendría que cambiar: por ejemplo, subirle la urgencia a quien lleve mucho tiempo esperando. Eso es lo que plantea el propuesto 5 de la Clase 26 (un paciente que empeora): como la clave crece, el paciente tiene que subir, y si se sabe en qué casilla está cuesta $O(\log n)$ (CLRS, §6.5).
 - **Si se conociera un tope pequeño de pacientes**, en vez de reservar $N$ casillas se podría reservar ese tope, y la cola volvería a dar la vuelta, como en `prueba_cola`.
+
+## Referencias
+
+- R. Thareja. *Data Structures Using C*. 2.ª ed. Oxford University Press, 2014. Capítulo 8 (colas), sección 8.4.1 (colas circulares).
+- T. H. Cormen, C. E. Leiserson, R. L. Rivest y C. Stein. *Introduction to Algorithms*. 4.ª ed. MIT Press, 2022. §6.1 (montículos) y §6.5 (colas de prioridad).
+- C. Delgado. Notas del curso Estructuras de Datos 2026-2, Pontificia Universidad Javeriana Cali: Clase 10 (interfaz e implementación), Clase 11 (TAD Cola), Clase 20 (medir con `clock()`), Clase 24 (altura de un árbol binario) y Clase 26 (montículo y cola de prioridad).
+- cppreference.com. [`std::priority_queue`](https://en.cppreference.com/w/cpp/container/priority_queue).
+- Claude (Anthropic). Asistente de IA, usado como apoyo con explicaciones y revisión de posibles errores en el código, y en la escritura y organización de los textos del informe.
